@@ -1,4 +1,4 @@
-package br.com.flying.dutchman.ui.movies
+package br.com.flying.dutchman.ui.common
 
 import com.google.gson.annotations.SerializedName
 

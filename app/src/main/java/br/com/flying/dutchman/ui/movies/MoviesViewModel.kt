@@ -2,7 +2,10 @@ package br.com.flying.dutchman.ui.movies
 
 import androidx.lifecycle.*
 import br.com.flying.dutchman.App
-import br.com.flying.dutchman.ui.movies.livedata.LiveEvent
+import br.com.flying.dutchman.ui.common.Movie
+import br.com.flying.dutchman.ui.common.MovieWrapper
+import br.com.flying.dutchman.ui.common.ViewState
+import br.com.flying.dutchman.ui.common.livedata.LiveEvent
 import com.google.gson.Gson
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -11,7 +14,7 @@ import io.reactivex.schedulers.Schedulers
 
 class MoviesViewModel : ViewModel(), LifecycleObserver {
 
-    val compositeDisposable: CompositeDisposable by lazy {
+    private val compositeDisposable: CompositeDisposable by lazy {
         CompositeDisposable()
     }
     private val state: MutableLiveData<ViewState<List<Movie>>> by lazy {
@@ -61,12 +64,6 @@ class MoviesViewModel : ViewModel(), LifecycleObserver {
                 }
         }
     }
-
-    fun addFavourite() {}
-    fun removeFavourite() {}
-
-    fun addWatchList() {}
-    fun removeWatchList() {}
 
 
     override fun onCleared() {

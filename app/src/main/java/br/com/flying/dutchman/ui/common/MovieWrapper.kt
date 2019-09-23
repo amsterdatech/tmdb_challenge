@@ -1,3 +1,3 @@
-package br.com.flying.dutchman.ui.movies
+package br.com.flying.dutchman.ui.common
 
 data class MovieWrapper(val data:List<Movie>)

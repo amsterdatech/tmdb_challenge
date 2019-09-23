@@ -11,6 +11,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import br.com.flying.dutchman.App
 import br.com.flying.dutchman.R
+import br.com.flying.dutchman.ui.common.GridSpacingItemDecoration
+import br.com.flying.dutchman.ui.common.Movie
+import br.com.flying.dutchman.ui.common.MoviesAdapter
+import br.com.flying.dutchman.ui.common.ViewState
 import dpToPx
 import kotlinx.android.synthetic.main.fragment_movies_list.*
 
@@ -18,10 +22,9 @@ class MoviesFragment : Fragment() {
 
     private lateinit var moviesViewModel: MoviesViewModel
     private val adapter by lazy {
-        MoviesAdapter(object : MoviesAdapter.OnItemClickListener<Movie> {
+        MoviesAdapter(object :
+            MoviesAdapter.OnItemClickListener<Movie> {
             override fun onItemClicked(item: Movie) {
-                //call new fragment (fragment manager or use navigation)
-                Log.d("MOVIE CLICKED", "Movie ID${item.title}")
             }
 
         })
@@ -37,7 +40,7 @@ class MoviesFragment : Fragment() {
             ViewModelProviders.of(this).get(MoviesViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_movies_list, container, false)
 
-        this.lifecycle.addObserver(moviesViewModel)
+        lifecycle.addObserver(moviesViewModel)
         setHasOptionsMenu(true)
         return root
     }
@@ -82,7 +85,11 @@ class MoviesFragment : Fragment() {
         fragment_movies_recycler_view.layoutManager = GridLayoutManager(this.context, 2)
 
         fragment_movies_recycler_view.addItemDecoration(
-            GridSpacingItemDecoration(2, App.instance.dpToPx(12), true)
+            GridSpacingItemDecoration(
+                2,
+                App.instance.dpToPx(12),
+                true
+            )
         )
         fragment_movies_recycler_view.adapter = this.adapter
         fragment_movies_recycler_view.setHasFixedSize(true)

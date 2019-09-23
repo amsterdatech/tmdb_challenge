@@ -1,4 +1,4 @@
-package br.com.flying.dutchman.ui.movies
+package br.com.flying.dutchman.ui.common
 
 import android.content.Context
 import android.graphics.Rect

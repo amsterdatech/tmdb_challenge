@@ -12,9 +12,9 @@
         tools:layout="@layout/fragment_movies_list" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_favourites"
         android:name="br.com.flying.dutchman.ui.favourites.FavouritesFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:label="@string/title_favourites"
+        tools:layout="@layout/fragment_favourites_list" />
 
 </navigation>

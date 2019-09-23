@@ -1,4 +1,4 @@
-package br.com.flying.dutchman.ui.movies.livedata
+package br.com.flying.dutchman.ui.common.livedata
 
 open class LiveEvent<out T>(private val content: T) {
 
