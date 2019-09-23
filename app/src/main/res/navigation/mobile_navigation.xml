@@ -17,4 +17,14 @@
         android:label="@string/title_favourites"
         tools:layout="@layout/fragment_favourites_list" />
 
+    <fragment
+        android:id="@+id/movie_detail"
+        android:name="br.com.flying.dutchman.ui.favourites.MovieDetailFragment"
+        android:label="Product Detail"
+        tools:layout="@layout/fragment_movie_detail">
+        <argument
+            android:name="product_id"
+            app:argType="integer" />
+    </fragment>
+
 </navigation>
