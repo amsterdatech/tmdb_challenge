@@ -1,6 +1,7 @@
 package br.com.flying.dutchman.ui.movies
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,13 @@ class MoviesFragment : Fragment() {
 
     private lateinit var moviesViewModel: MoviesViewModel
     private val adapter by lazy {
-        MoviesAdapter()
+        MoviesAdapter(object : MoviesAdapter.OnItemClickListener<Movie> {
+            override fun onItemClicked(item: Movie) {
+                //call new fragment (fragment manager or use navigation)
+                Log.d("MOVIE CLICKED", "Movie ID${item.title}")
+            }
+
+        })
     }
 
 
@@ -62,7 +69,7 @@ class MoviesFragment : Fragment() {
                         //show error view (try again)
                     }
 
-                    else -> {
+                    ViewState.Status.COMPLETE -> {
 
                     }
                 }
@@ -73,9 +80,7 @@ class MoviesFragment : Fragment() {
 
     private fun setupView(view: View) {
         fragment_movies_recycler_view.layoutManager = GridLayoutManager(this.context, 2)
-        this.adapter.click = View.OnClickListener {
 
-        }
         fragment_movies_recycler_view.addItemDecoration(
             GridSpacingItemDecoration(2, App.instance.dpToPx(12), true)
         )
