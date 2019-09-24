@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.GridLayoutManager
 import br.com.flying.dutchman.App
 import br.com.flying.dutchman.R
@@ -15,6 +17,7 @@ import br.com.flying.dutchman.ui.common.Movie
 import br.com.flying.dutchman.ui.common.MoviesAdapter
 import br.com.flying.dutchman.ui.common.ViewState
 import dpToPx
+import kotlinx.android.synthetic.main.custom_loading_progressbar.*
 import kotlinx.android.synthetic.main.fragment_movies_list.*
 
 class FavouritesFragment : Fragment() {
@@ -81,6 +84,8 @@ class FavouritesFragment : Fragment() {
     }
 
     private fun setupView(view: View) {
+        val navController = Navigation.findNavController(view)
+
         fragment_movies_recycler_view.layoutManager = GridLayoutManager(this.context, 2)
 
         fragment_movies_recycler_view.addItemDecoration(

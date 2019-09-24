@@ -1,4 +1,4 @@
-package br.com.flying.dutchman.ui
+package br.com.flying.dutchman.ui.movies
 
 import android.content.Context
 import android.util.AttributeSet

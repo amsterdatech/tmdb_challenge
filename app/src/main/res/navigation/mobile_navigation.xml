@@ -9,7 +9,12 @@
         android:id="@+id/navigation_home"
         android:name="br.com.flying.dutchman.ui.movies.MoviesFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_movies_list" />
+        tools:layout="@layout/fragment_movies_list">
+        <action
+            android:id="@+id/navigate_to_movie_detail"
+            app:destination="@id/movie_detail" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_favourites"
@@ -19,12 +24,11 @@
 
     <fragment
         android:id="@+id/movie_detail"
-        android:name="br.com.flying.dutchman.ui.favourites.MovieDetailFragment"
-        android:label="Product Detail"
+        android:name="br.com.flying.dutchman.ui.moviedetail.MovieDetailFragment"
         tools:layout="@layout/fragment_movie_detail">
         <argument
-            android:name="product_id"
-            app:argType="integer" />
+            android:name="movie_id"
+            app:argType="long" />
     </fragment>
 
 </navigation>
