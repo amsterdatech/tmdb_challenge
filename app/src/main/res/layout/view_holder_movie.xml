@@ -57,7 +57,7 @@
             android:layout_marginBottom="8dp"
             android:background="@null"
             android:scaleType="centerCrop"
-            android:tint="@android:color/holo_red_dark"
+            android:tint="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/custom_view_movie_title_text"
             app:layout_constraintTop_toBottomOf="@+id/custom_view_movie_title_text"

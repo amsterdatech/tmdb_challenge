@@ -26,7 +26,6 @@ class MoviesFragment : Fragment() {
             MoviesAdapter.OnItemClickListener<Movie> {
             override fun onItemClicked(item: Movie) {
             }
-
         })
     }
 
