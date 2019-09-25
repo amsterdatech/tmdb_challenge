@@ -23,25 +23,7 @@ class MoviesRepository @Inject constructor(
                     mapper.mapFromEntity(movie)
                 }
             }
-
-//        return Observable.concat(
-//            db.getMovies(),
-//            api.getMovies()
-//        ).flatMap { list ->
-//            Observable.just(list.map {
-//                mapper.mapFromEntity(it)
-//            })
-//        }
-
-
-//            .map { list ->
-//                list.map {
-//                    mapper.mapFromEntity(it)
-//                }
-//            }
-
     }
-
 }
 
 interface MoviesDataRepository {

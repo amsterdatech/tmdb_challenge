@@ -29,7 +29,7 @@ class MainActivity : DaggerAppCompatActivity() {
             )
         )
 
-        setSupportActionBar(movies_toolbar)
+//        setSupportActionBar(movies_toolbar)
 
 
         movies_toolbar.setupWithNavController(navController, appBarConfiguration)
