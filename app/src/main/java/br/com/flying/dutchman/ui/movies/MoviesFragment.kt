@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import br.com.flying.dutchman.App
@@ -22,7 +20,6 @@ import dagger.android.support.DaggerFragment
 import dpToPx
 import kotlinx.android.synthetic.main.custom_loading_progressbar.*
 import kotlinx.android.synthetic.main.fragment_movies_list.*
-import withViewModel
 import javax.inject.Inject
 
 class MoviesFragment : DaggerFragment() {
@@ -33,13 +30,29 @@ class MoviesFragment : DaggerFragment() {
     lateinit var moviesViewModel: MoviesViewModel
 
     private val adapter by lazy {
-        MoviesAdapter(object :
-            MoviesAdapter.OnItemClickListener<Movie> {
-            override fun onItemClicked(item: Movie) {
-                val bundle = bundleOf("movie_id" to item.id)
-                findNavController().navigate(R.id.navigate_to_movie_detail, bundle)
-            }
-        })
+        MoviesAdapter(
+            listener = object :
+                MoviesAdapter.OnItemClickListener<Movie> {
+                override fun onItemClicked(item: Movie) {
+                    val bundle = bundleOf("movie_id" to item.id)
+                    findNavController().navigate(R.id.navigate_to_movie_detail, bundle)
+                }
+            },
+            overflowListener = object : MoviesAdapter.OnItemClickOverflowMenuListener<Movie, View> {
+                override fun onItemOverflowClicked(item: Movie, v: View) {
+                    val popMenu = PopupMenu(v.context, v)
+                    popMenu.inflate(R.menu.overflow_btn_menu)
+                    popMenu.setOnMenuItemClickListener {
+                        when (it.itemId) {
+                            R.id.watch_list -> {
+                                true
+                            }
+                        }
+                        false
+                    }
+                    popMenu.show()
+                }
+            })
     }
 
 
@@ -48,19 +61,8 @@ class MoviesFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        moviesViewModel =
-//            ViewModelProviders.of(this).get(MoviesViewModel::class.java)
-//
 
-
-//        moviesViewModel = withViewModel(viewModelFactory) {
-//            lifecycle.addObserver(moviesViewModel)
-//            observeMovies(this)
-//        }
-
-//        observeMovies(moviesViewModel)
         val root = inflater.inflate(R.layout.fragment_movies_list, container, false)
-
         setHasOptionsMenu(true)
         return root
     }
@@ -71,6 +73,7 @@ class MoviesFragment : DaggerFragment() {
         setupView(view)
         observeMovies(moviesViewModel)
     }
+
 
     private fun observeMovies(moviesViewModel: MoviesViewModel) {
         moviesViewModel
@@ -105,8 +108,6 @@ class MoviesFragment : DaggerFragment() {
     }
 
     private fun setupView(view: View) {
-        val navController = findNavController(view)
-
         fragment_movies_recycler_view.layoutManager = GridLayoutManager(this.context, 2)
 
         fragment_movies_recycler_view.addItemDecoration(
@@ -119,5 +120,4 @@ class MoviesFragment : DaggerFragment() {
         fragment_movies_recycler_view.adapter = this.adapter
         fragment_movies_recycler_view.setHasFixedSize(true)
     }
-
 }

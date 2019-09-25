@@ -1,8 +1,10 @@
 package br.com.flying.dutchman.ui.common
 
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import br.com.flying.dutchman.BuildConfig
 import br.com.flying.dutchman.R
@@ -12,9 +14,12 @@ import kotlin.properties.Delegates
 
 class MoviesAdapter(
     private val listener: OnItemClickListener<Movie>,
-    var favouriteListener: OnItemClickFavouriteListener<Movie>? = null
+    var favouriteListener: OnItemClickFavouriteListener<Movie>? = null,
+    var overflowListener: OnItemClickOverflowMenuListener<Movie, View>? = null
 ) :
     RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
+
+
     var items: List<Movie> by Delegates.observable(emptyList()) { _, _, _ -> notifyDataSetChanged() }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -31,7 +36,12 @@ class MoviesAdapter(
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[position], listener, favouriteListener)
+        holder.bind(
+            items[position],
+            listener,
+            favouriteListener,
+            overflowListener
+        )
     }
 
 
@@ -41,7 +51,8 @@ class MoviesAdapter(
         fun bind(
             item: Movie,
             listener: OnItemClickListener<Movie>,
-            favouriteListener: OnItemClickFavouriteListener<Movie>?
+            favouriteListener: OnItemClickFavouriteListener<Movie>?,
+            overflowListener: OnItemClickOverflowMenuListener<Movie, View>?
         ) {
             containerView.custom_view_movie_title_text.text = item.title
             val posterUrl = "${BuildConfig.IMAGE_SERVER}${item.posterPath}"
@@ -61,6 +72,11 @@ class MoviesAdapter(
             containerView.favourite_btn.setOnClickListener {
                 favouriteListener?.onItemFavouriteClicked(item)
             }
+
+            containerView.overflow_btn.setOnClickListener {
+                overflowListener?.onItemOverflowClicked(item, it)
+
+            }
         }
 
     }
@@ -71,6 +87,10 @@ class MoviesAdapter(
 
     interface OnItemClickFavouriteListener<T> {
         fun onItemFavouriteClicked(item: T)
+    }
+
+    interface OnItemClickOverflowMenuListener<T, View> {
+        fun onItemOverflowClicked(item: T, v: View)
     }
 
 
