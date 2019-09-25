@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
@@ -15,8 +16,11 @@ import br.com.flying.dutchman.ui.common.ViewState
 import kotlinx.android.synthetic.main.fragment_movie_detail.*
 import kotlinx.android.synthetic.main.movie_details.*
 import load
+import javax.inject.Inject
 
 class MovieDetailFragment : Fragment() {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var moviesViewModel: MovieDetailViewModel
 

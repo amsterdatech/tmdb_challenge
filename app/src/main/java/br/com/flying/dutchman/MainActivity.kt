@@ -2,17 +2,18 @@ package br.com.flying.dutchman
 
 import android.os.Bundle
 import android.view.View
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.android.DaggerActivity
+import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : DaggerAppCompatActivity() {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +28,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home, R.id.navigation_favourites
             )
         )
+
+        setSupportActionBar(movies_toolbar)
+
 
         movies_toolbar.setupWithNavController(navController, appBarConfiguration)
         bottomNavigationView.setupWithNavController(navController)

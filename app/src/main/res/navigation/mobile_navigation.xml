@@ -20,7 +20,12 @@
         android:id="@+id/navigation_favourites"
         android:name="br.com.flying.dutchman.ui.favourites.FavouritesFragment"
         android:label="@string/title_favourites"
-        tools:layout="@layout/fragment_favourites_list" />
+        tools:layout="@layout/fragment_favourites_list">
+        <action
+            android:id="@+id/navigate_to_movie_detail"
+            app:destination="@id/movie_detail" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/movie_detail"

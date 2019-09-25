@@ -16,10 +16,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
 
-        buildConfigField 'String', 'API_SERVER', '"https://api.themoviedb.org/"'
+        buildConfigField 'String', 'API_SERVER', '"http://api.themoviedb.org/3/discover/"'
         buildConfigField 'String', 'API_KEY', '"5e86ffe5fbe991b6fae8fc10834ed3a4"'
         buildConfigField 'String', 'IMAGE_SERVER', '"https://image.tmdb.org/t/p/w500"'
-
 
         vectorDrawables.useSupportLibrary = true
 
@@ -31,6 +30,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
@@ -40,11 +49,20 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.vectordrawable:vectordrawable:1.0.1'
-    implementation 'androidx.navigation:navigation-fragment:2.0.0'
-    implementation 'androidx.navigation:navigation-ui:2.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.0.0'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.0.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.2.0-alpha01'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.2.0-alpha01'
+
+    implementation dagger
+    implementation daggerSupport
+    implementation daggerAndroid
+
+    kapt daggerCompiler
+    kapt daggerProcessor
+    kapt daggerSupport
+
+    javaxAnnotation
+    javaxInject
 
     implementation glide
     implementation retrofit
@@ -55,6 +73,11 @@ dependencies {
     implementation gson
     implementation rxKotlin
     implementation rxAndroid
+
+
+    implementation roomRx
+    implementation roomRuntime
+    kapt roomCompiler
 
     testImplementation jUnit
     testImplementation mockito

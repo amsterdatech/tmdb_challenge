@@ -19,6 +19,8 @@ ext {
     javaxAnnotationVersion = '1.0'
     javaxInjectVersion = '1'
 
+    roomVersion = '2.1.0'
+
     jUnitVersion = '4.12'
     mockitoKotlinVersion = '1.5.0'
 
@@ -50,6 +52,10 @@ ext {
     dagger = "com.google.dagger:dagger:${daggerVersion}"
     daggerSupport = "com.google.dagger:dagger-android-support:${daggerVersion}"
     daggerAndroid = "com.google.dagger:dagger-android:${daggerVersion}"
+
+    roomRx = "androidx.room:room-rxjava2:${roomVersion}"
+    roomRuntime = "androidx.room:room-runtime:${roomVersion}"
+    roomCompiler = "androidx.room:room-compiler:${roomVersion}"
 
 
     jUnit = "junit:junit:${jUnitVersion}"

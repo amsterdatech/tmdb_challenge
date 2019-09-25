@@ -6,17 +6,18 @@ import br.com.flying.dutchman.ui.common.Movie
 import br.com.flying.dutchman.ui.common.MovieWrapper
 import br.com.flying.dutchman.ui.common.ViewState
 import br.com.flying.dutchman.ui.common.livedata.LiveEvent
+import com.dutchtechnologies.domain.interactor.GetMoviesListSingleUseCase
 import com.google.gson.Gson
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class MoviesViewModel : ViewModel(), LifecycleObserver {
+class MoviesViewModel @Inject constructor(private val moviesUseCase: GetMoviesListSingleUseCase) :
+    ViewModel(), LifecycleObserver {
 
-    private val compositeDisposable: CompositeDisposable by lazy {
-        CompositeDisposable()
-    }
     private val state: MutableLiveData<ViewState<List<Movie>>> by lazy {
         MutableLiveData<ViewState<List<Movie>>>()
     }
@@ -35,39 +36,64 @@ class MoviesViewModel : ViewModel(), LifecycleObserver {
     fun loadMovies() {
         if (state.value == null) {
             state.postValue(ViewState(status = ViewState.Status.LOADING))
+            moviesUseCase.execute(MoviesSubscriber())
 
-            Observable
-                .defer {
-                    Observable.just(Gson().fromJson(App.moviesJson(), MovieWrapper::class.java))
-                }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    {
-                        state.postValue(
-                            ViewState(
-                                status = ViewState.Status.SUCCESS,
-                                data = it.data
-                            )
-                        )
-                    },
-                    {
-                        state.postValue(
-                            ViewState(
-                                status = ViewState.Status.ERROR
-                            )
-                        )
-                    }
-                )
-                .apply {
-                    compositeDisposable.add(this)
-                }
+//            Observable
+//                .defer {
+//                    Observable.just(Gson().fromJson(App.moviesJson(), MovieWrapper::class.java))
+//                }
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(
+//                    {
+//                        state.postValue(
+//                            ViewState(
+//                                status = ViewState.Status.SUCCESS,
+//                                data = it.data
+//                            )
+//                        )
+//                    },
+//                    {
+//                        state.postValue(
+//                            ViewState(
+//                                status = ViewState.Status.ERROR
+//                            )
+//                        )
+//                    }
+//                )
+
         }
     }
 
 
     override fun onCleared() {
         super.onCleared()
-        compositeDisposable.clear()
+        moviesUseCase.dispose()
+    }
+
+
+    inner class MoviesSubscriber :
+        DisposableSingleObserver<List<com.dutchtechnologies.domain.Movie>>() {
+        override fun onSuccess(results: List<com.dutchtechnologies.domain.Movie>) {
+            val result = results.map {
+                Movie(it.id, it.title, it.backdropPath, it.posterPath, false)
+            }
+
+            state.postValue(
+                ViewState(
+                    status = ViewState.Status.SUCCESS,
+                    data = result
+                )
+            )
+        }
+
+        override fun onError(e: Throwable) {
+            state.postValue(
+                ViewState(
+                    status = ViewState.Status.ERROR, error = e
+                )
+            )
+        }
+
     }
 }

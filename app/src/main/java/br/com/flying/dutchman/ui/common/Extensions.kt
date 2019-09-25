@@ -1,8 +1,12 @@
 import android.content.Context
 import android.util.TypedValue
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import br.com.flying.dutchman.App
-import br.com.flying.dutchman.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -32,4 +36,30 @@ fun Context.dpToPx(dp: Int): Int {
         dp.toFloat(),
         resources.displayMetrics
     ).roundToInt()
+}
+
+inline fun <reified T : ViewModel> AppCompatActivity.withViewModel(
+    viewModelFactory: ViewModelProvider.Factory,
+    body: T.() -> Unit
+): T {
+    val viewModel = viewModelProviders<T>(viewModelFactory)
+    viewModel.body()
+    return viewModel
+}
+
+inline fun <reified T : ViewModel> AppCompatActivity.viewModelProviders(viewModelFactory: ViewModelProvider.Factory): T {
+    return ViewModelProviders.of(this, viewModelFactory)[T::class.java]
+}
+
+inline fun <reified T : ViewModel> Fragment.viewModelProviders(viewModelFactory: ViewModelProvider.Factory): T {
+    return ViewModelProviders.of(this, viewModelFactory)[T::class.java]
+}
+
+inline fun <reified T : ViewModel> Fragment.withViewModel(
+    viewModelFactory: ViewModelProvider.Factory,
+    body: T.() -> Unit
+): T {
+    val viewModel = viewModelProviders<T>(viewModelFactory)
+    viewModel.body()
+    return viewModel
 }
