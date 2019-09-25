@@ -17,7 +17,9 @@ class MoviesMapper @Inject constructor(
             type.releaseData,
             type.runtime,
             type.voteAverage,
-            type.voteCount
+            type.voteCount,
+            type.isFavourite,
+            type.inWatchList
         )
     }
 
@@ -31,7 +33,9 @@ class MoviesMapper @Inject constructor(
             type.releaseData,
             type.runtime,
             type.voteAverage,
-            type.voteCount
+            type.voteCount,
+            type.isFavourite,
+            type.inWatchList
         )
     }
 

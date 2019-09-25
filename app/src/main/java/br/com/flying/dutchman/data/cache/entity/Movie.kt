@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class Movie(
     @PrimaryKey
-    val id: Long,
+    val id: Int,
     val title: String,
     val overview: String,
     val posterPath: String,
@@ -14,5 +14,7 @@ data class Movie(
     val releaseData: String,
     val runtime: Int,
     val voteAverage: Float,
-    val voteCount: Int
+    val voteCount: Int,
+    var isFavourite: Boolean = false,
+    var inWatchList: Boolean = false
 )

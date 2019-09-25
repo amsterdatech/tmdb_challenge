@@ -7,14 +7,21 @@ import io.reactivex.Observable
 
 @Dao
 interface MovieDao {
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun save(movies: List<Movie>): Completable
+    fun save(movie: Movie)
 
 
     @Query("SELECT * FROM Movie")
     fun movies(): Observable<List<Movie>>
 
+    @Query("SELECT * FROM Movie WHERE isFavourite = 1")
+    fun favourites(): Observable<List<Movie>>
 
-    @Query("SELECT * FROM Movie WHERE id = :id")
+    @Query("SELECT * FROM Movie WHERE inWatchList = 1")
+    fun watchList(): Observable<List<Movie>>
+
+
+    @Query("SELECT * FROM Movie WHERE id = :id LIMIT 1")
     fun movieById(id: String): Observable<Movie>
 }

@@ -10,7 +10,7 @@ data class MovieResponse(
 )
 
 data class Movie(
-    val id: Long,
+    val id: Int,
     val title: String,
     val overview: String,
     @SerializedName("poster_path") val posterPath: String,

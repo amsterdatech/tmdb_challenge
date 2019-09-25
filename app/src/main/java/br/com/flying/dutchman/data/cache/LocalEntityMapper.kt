@@ -1,5 +1,8 @@
 package br.com.flying.dutchman.data.cache
 
-interface LocalEntityMapper<in M, out E> {
+interface LocalEntityMapper<M, E> {
     fun mapFrom(type: M): E
+
+    fun mapTo(type: E): M
 }
+
