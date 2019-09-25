@@ -10,10 +10,12 @@ import kotlinx.android.synthetic.main.view_holder_movie.view.*
 import load
 import kotlin.properties.Delegates
 
-class MoviesAdapter(val listener: OnItemClickListener<Movie>) :
+class MoviesAdapter(
+    private val listener: OnItemClickListener<Movie>,
+    var favouriteListener: OnItemClickFavouriteListener<Movie>? = null
+) :
     RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
     var items: List<Movie> by Delegates.observable(emptyList()) { _, _, _ -> notifyDataSetChanged() }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
@@ -29,17 +31,24 @@ class MoviesAdapter(val listener: OnItemClickListener<Movie>) :
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[position], listener)
+        holder.bind(items[position], listener, favouriteListener)
     }
 
 
     class ViewHolder(var containerView: View) :
         RecyclerView.ViewHolder(containerView) {
 
-        fun bind(item: Movie, listener: OnItemClickListener<Movie>) {
+        fun bind(
+            item: Movie,
+            listener: OnItemClickListener<Movie>,
+            favouriteListener: OnItemClickFavouriteListener<Movie>?
+        ) {
             containerView.custom_view_movie_title_text.text = item.title
             val posterUrl = "${BuildConfig.IMAGE_SERVER}${item.posterPath}"
+
             containerView.custom_view_movie_poster_image.load(posterUrl)
+
+            containerView.favourite_btn.isChecked = item.isFavourite
 
             containerView.setOnClickListener {
                 listener.onItemClicked(item)
@@ -48,12 +57,20 @@ class MoviesAdapter(val listener: OnItemClickListener<Movie>) :
             containerView.custom_view_movie_poster_image.setOnClickListener {
                 listener.onItemClicked(item)
             }
+
+            containerView.favourite_btn.setOnClickListener {
+                favouriteListener?.onItemFavouriteClicked(item)
+            }
         }
 
     }
 
     interface OnItemClickListener<T> {
         fun onItemClicked(item: T)
+    }
+
+    interface OnItemClickFavouriteListener<T> {
+        fun onItemFavouriteClicked(item: T)
     }
 
 

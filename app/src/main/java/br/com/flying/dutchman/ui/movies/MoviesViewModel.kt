@@ -37,31 +37,6 @@ class MoviesViewModel @Inject constructor(private val moviesUseCase: GetMoviesLi
         if (state.value == null) {
             state.postValue(ViewState(status = ViewState.Status.LOADING))
             moviesUseCase.execute(MoviesSubscriber())
-
-//            Observable
-//                .defer {
-//                    Observable.just(Gson().fromJson(App.moviesJson(), MovieWrapper::class.java))
-//                }
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(
-//                    {
-//                        state.postValue(
-//                            ViewState(
-//                                status = ViewState.Status.SUCCESS,
-//                                data = it.data
-//                            )
-//                        )
-//                    },
-//                    {
-//                        state.postValue(
-//                            ViewState(
-//                                status = ViewState.Status.ERROR
-//                            )
-//                        )
-//                    }
-//                )
-
         }
     }
 
