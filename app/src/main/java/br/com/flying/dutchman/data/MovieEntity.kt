@@ -1,15 +1,15 @@
 package br.com.flying.dutchman.data
 
 data class MovieEntity(
-    val id: Int,
-    val title: String,
-    val overview: String,
-    val posterPath: String,
-    val backdropPath: String,
-    val releaseData: String,
-    val runtime: Int,
-    val voteAverage: Float,
-    val voteCount: Int,
+    var id: Int = 0,
+    var title: String = "",
+    var overview: String = "",
+    var posterPath: String = "",
+    var backdropPath: String = "",
+    var releaseData: String = "",
+    var runtime: Int = 0,
+    var voteAverage: Float = 0.0f,
+    var voteCount: Int = 0,
     var isFavourite: Boolean = false,
     var inWatchList: Boolean = false
 )

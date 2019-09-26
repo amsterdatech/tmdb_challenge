@@ -17,10 +17,7 @@ class RoomRepository @Inject constructor(
 ) :
     MoviesDataRepository {
     override fun save(movies: List<MovieEntity>) {
-        mapper.mapTo(movies)
-            .map { movie ->
-                save(movie)
-            }
+        db.movieDao().saveAll(mapper.mapTo(movies))
     }
 
 

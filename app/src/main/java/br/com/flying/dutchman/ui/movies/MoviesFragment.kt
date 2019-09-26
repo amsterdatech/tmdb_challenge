@@ -23,45 +23,25 @@ import kotlinx.android.synthetic.main.custom_loading_progressbar.*
 import kotlinx.android.synthetic.main.fragment_movies_list.*
 import javax.inject.Inject
 
-class MoviesFragment : DaggerFragment() {
+class MoviesFragment : DaggerFragment(), MoviesAdapter.OnItemClickListener<Movie, View>,
+    MoviesAdapter.OnItemClickOverflowMenuListener<Movie, View> {
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     @Inject
     lateinit var moviesViewModel: MoviesViewModel
 
+
+    companion object {
+        const val MOVIES_LIST = "MOVIES_LIST"
+    }
+
     private val adapter by lazy {
         MoviesAdapter(
-            listener = object :
-                MoviesAdapter.OnItemClickListener<Movie, View> {
-                override fun onItemClicked(item: Movie, v: View) {
-                    val extras = FragmentNavigatorExtras(
-                        v to "poster_image"
-                    )
-                    val bundle = bundleOf("movie_id" to item.id)
-                    findNavController().navigate(
-                        R.id.navigate_to_movie_detail,
-                        bundle,
-                        null,
-                        extras
-                    )
-                }
-            },
-            overflowListener = object : MoviesAdapter.OnItemClickOverflowMenuListener<Movie, View> {
-                override fun onItemOverflowClicked(item: Movie, v: View) {
-                    val popMenu = PopupMenu(v.context, v)
-                    popMenu.inflate(R.menu.overflow_btn_menu)
-                    popMenu.setOnMenuItemClickListener {
-                        when (it.itemId) {
-                            R.id.watch_list -> {
-                                true
-                            }
-                        }
-                        false
-                    }
-                    popMenu.show()
-                }
-            })
+            listener = this,
+            overflowListener = this
+        )
     }
 
 
@@ -83,6 +63,53 @@ class MoviesFragment : DaggerFragment() {
         observeMovies(moviesViewModel)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        if (adapter.items.isEmpty()) {
+            savedInstanceState?.let {
+                if (it.containsKey(MOVIES_LIST)) {
+                    adapter.items = savedInstanceState.getParcelableArrayList(MOVIES_LIST)
+                }
+            }
+        }
+    }
+
+    override fun onItemClicked(item: Movie, v: View) {
+        val extras = FragmentNavigatorExtras(
+            v to "poster_image"
+        )
+        val bundle = bundleOf("movie_id" to item.id)
+        findNavController().navigate(
+            R.id.navigate_to_movie_detail,
+            bundle,
+            null,
+            extras
+        )
+    }
+
+    override fun onItemOverflowClicked(item: Movie, v: View) {
+        val popMenu = PopupMenu(v.context, v)
+        popMenu.inflate(R.menu.overflow_btn_menu)
+        popMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.watch_list -> {
+                    true
+                }
+            }
+            false
+        }
+        popMenu.show()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (adapter.items.isNotEmpty()) outState.putParcelableArrayList(
+            MOVIES_LIST,
+            adapter.items as ArrayList
+        )
+        super.onSaveInstanceState(outState)
+    }
+
 
     private fun observeMovies(moviesViewModel: MoviesViewModel) {
         moviesViewModel
@@ -95,11 +122,13 @@ class MoviesFragment : DaggerFragment() {
 
                     ViewState.Status.SUCCESS -> {
                         fragment_movies_custom_view_loading.visibility = View.GONE
-
-                        //update list in adapter
-                        this.adapter.items = it.data ?: emptyList()
-                        this.adapter.notifyDataSetChanged()
-
+                        val result = it.data ?: emptyList()
+                        if (result.isNotEmpty()) {
+                            this.adapter.items = result
+                            this.adapter.notifyDataSetChanged()
+                        } else {
+                            // show empty state
+                        }
                     }
 
                     ViewState.Status.ERROR -> {
@@ -115,6 +144,7 @@ class MoviesFragment : DaggerFragment() {
 
         moviesViewModel.loadMovies()
     }
+
 
     private fun setupView(view: View) {
         fragment_movies_recycler_view.layoutManager = GridLayoutManager(this.context, 2)

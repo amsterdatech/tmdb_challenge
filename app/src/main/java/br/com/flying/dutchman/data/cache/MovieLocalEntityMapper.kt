@@ -11,15 +11,16 @@ open class MovieLocalEntityMapper @Inject constructor() :
             Movie(
                 it.id,
                 it.title,
-                it.overview,
-                it.posterPath,
-                it.backdropPath,
-                it.releaseData,
-                it.runtime,
-                it.voteAverage,
-                it.voteCount,
-                it.isFavourite,
-                it.inWatchList
+                it.overview
+//                ,
+//                it.posterPath,
+//                it.backdropPath,
+//                it.releaseData,
+//                it.runtime,
+//                it.voteAverage,
+//                it.voteCount,
+//                it.isFavourite,
+//                it.inWatchList
             )
         }
     }
@@ -29,15 +30,16 @@ open class MovieLocalEntityMapper @Inject constructor() :
             MovieEntity(
                 it.id,
                 it.title,
-                it.overview,
-                it.posterPath,
-                it.backdropPath,
-                it.releaseData,
-                it.runtime,
-                it.voteAverage,
-                it.voteCount,
-                it.isFavourite,
-                it.inWatchList
+                it.overview
+//                ,
+//                it.posterPath,
+//                it.backdropPath,
+//                it.releaseData,
+//                it.runtime,
+//                it.voteAverage,
+//                it.voteCount,
+//                it.isFavourite,
+//                it.inWatchList
             )
         }
     }
