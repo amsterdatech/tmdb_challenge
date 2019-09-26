@@ -142,12 +142,13 @@ class MoviesFragment : DaggerFragment(), MoviesAdapter.OnItemClickListener<Movie
 
 
     private fun setupView(view: View) {
-        fragment_movies_recycler_view.layoutManager = GridLayoutManager(this.context, 2)
+        val columnCount = view.resources.getInteger(R.integer.column_count)
+        fragment_movies_recycler_view.layoutManager = GridLayoutManager(this.context, columnCount)
 
         fragment_movies_recycler_view.addItemDecoration(
             GridSpacingItemDecoration(
-                2,
-                App.instance.dpToPx(12),
+                columnCount,
+                view.context.dpToPx(12),
                 true
             )
         )

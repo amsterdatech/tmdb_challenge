@@ -3,4 +3,6 @@
     <string name="title_home">Movies</string>
     <string name="title_favourites">Favourites</string>
     <string name="watch_later">Watch Later</string>
+
+    <integer name="column_count">2</integer>
 </resources>
