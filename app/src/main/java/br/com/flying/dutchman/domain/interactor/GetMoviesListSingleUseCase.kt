@@ -10,8 +10,19 @@ class GetMoviesListSingleUseCase @Inject constructor(
     private val repository: MoviesRepository,
     subscribeScheduler: Scheduler,
     postExecutionScheduler: Scheduler
-) : SingleUseCase<List<Movie>, Any?>(subscribeScheduler, postExecutionScheduler) {
+) : SingleUseCase<List<Movie>, Int>(subscribeScheduler, postExecutionScheduler) {
 
-    override fun buildUseCaseSingle(params: Any?): Single<List<Movie>> =
-        Single.fromObservable(repository.getMovies())
+    override fun buildUseCaseSingle(params: Int?): Single<List<Movie>> {
+        val page = params?.let {
+            it
+        }?:0
+
+        if(page >0){
+            Single.fromObservable(repository.getMovies(page))
+
+        }
+
+        return         Single.fromObservable(repository.getMovies())
+
+    }
 }

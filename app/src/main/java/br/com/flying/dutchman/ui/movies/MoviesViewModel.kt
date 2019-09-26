@@ -40,6 +40,13 @@ class MoviesViewModel @Inject constructor(private val moviesUseCase: GetMoviesLi
         }
     }
 
+    fun loadMovies(page: Int) {
+        if (state.value == null) {
+            state.postValue(ViewState(status = ViewState.Status.LOADING))
+            moviesUseCase.execute(MoviesSubscriber(),page)
+        }
+    }
+
 
     override fun onCleared() {
         super.onCleared()

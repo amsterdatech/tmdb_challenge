@@ -20,7 +20,7 @@ class MoviesAdapter(
     RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
 
 
-    var items: List<Movie> by Delegates.observable(emptyList()) { _, _, _ -> notifyDataSetChanged() }
+    var items: List<Movie> by Delegates.observable(mutableListOf()) { _, _, _ -> notifyDataSetChanged() }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(

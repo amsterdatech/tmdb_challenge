@@ -30,8 +30,8 @@ class FavouritesFragment : Fragment() {
 
     private val adapter by lazy {
         MoviesAdapter(object :
-            MoviesAdapter.OnItemClickListener<Movie,View> {
-            override fun onItemClicked(item: Movie, v:View) {
+            MoviesAdapter.OnItemClickListener<Movie, View> {
+            override fun onItemClicked(item: Movie, v: View) {
             }
 
         })
@@ -68,7 +68,7 @@ class FavouritesFragment : Fragment() {
                         this.fragment_movies_custom_view_loading.visibility = View.GONE
 
                         //update list in adapter
-                        this.adapter.items = it.data ?: emptyList()
+                        this.adapter.items = it.data?.toMutableList() ?: mutableListOf()
                         this.adapter.notifyDataSetChanged()
 
                     }

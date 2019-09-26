@@ -15,8 +15,8 @@ class ApiRepository @Inject constructor(
     MoviesDataRepository {
 
 
-    override fun getMovies(): Observable<List<MovieEntity>> {
-        return apiService.getMovies()
+    override fun getMovies(page:Int): Observable<List<MovieEntity>> {
+        return apiService.getMovies(page)
             .toObservable().map {
                 mapper.mapFromRemote(it.results)
             }

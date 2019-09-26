@@ -11,12 +11,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import br.com.flying.dutchman.App
 import br.com.flying.dutchman.R
-import br.com.flying.dutchman.ui.common.GridSpacingItemDecoration
-import br.com.flying.dutchman.ui.common.Movie
-import br.com.flying.dutchman.ui.common.MoviesAdapter
-import br.com.flying.dutchman.ui.common.ViewState
+import br.com.flying.dutchman.ui.common.*
 import dagger.android.support.DaggerFragment
 import dpToPx
 import kotlinx.android.synthetic.main.custom_loading_progressbar.*
@@ -31,6 +29,9 @@ class MoviesFragment : DaggerFragment(), MoviesAdapter.OnItemClickListener<Movie
 
     @Inject
     lateinit var moviesViewModel: MoviesViewModel
+
+    //    private lateinit var scrollListener: GridEndlessRecyclerViewScrollListener
+    private lateinit var scrollListener: EndlessRecyclerViewScrollListener
 
 
     companion object {
@@ -61,6 +62,7 @@ class MoviesFragment : DaggerFragment(), MoviesAdapter.OnItemClickListener<Movie
 
         setupView(view)
         observeMovies(moviesViewModel)
+        moviesViewModel.loadMovies(1)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -136,15 +138,21 @@ class MoviesFragment : DaggerFragment(), MoviesAdapter.OnItemClickListener<Movie
                     }
                 }
             })
-
-        moviesViewModel.loadMovies()
     }
 
 
     private fun setupView(view: View) {
         val columnCount = view.resources.getInteger(R.integer.column_count)
-        fragment_movies_recycler_view.layoutManager = GridLayoutManager(this.context, columnCount)
+        val layoutManager = GridLayoutManager(this.context, columnCount)
+        fragment_movies_recycler_view.layoutManager = layoutManager
+//        scrollListener = GridEndlessRecyclerViewScrollListener(layoutManager, this)
+        scrollListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
+                moviesViewModel.loadMovies(page)
+            }
 
+        }
+        fragment_movies_recycler_view.addOnScrollListener(scrollListener)
         fragment_movies_recycler_view.addItemDecoration(
             GridSpacingItemDecoration(
                 columnCount,

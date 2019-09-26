@@ -16,6 +16,7 @@ import br.com.flying.dutchman.ui.common.Movie
 import br.com.flying.dutchman.ui.common.ViewState
 import dagger.android.support.DaggerFragment
 import image
+import kotlinx.android.synthetic.main.custom_loading_progressbar.*
 import kotlinx.android.synthetic.main.fragment_movie_detail.*
 import kotlinx.android.synthetic.main.include_movie_details.*
 import kotlinx.android.synthetic.main.include_toolbar_collapsing_movie_detail.*
@@ -83,16 +84,20 @@ class MovieDetailFragment : DaggerFragment() {
             .observe(this, Observer {
                 when (it.status) {
                     ViewState.Status.LOADING -> {
-                        fragment_movie_detail_custom_view_loading.visibility = View.VISIBLE
+                        fragment_movies_custom_view_loading.visibility = View.VISIBLE
+                        fragment_movie_details_nested_scroll.visibility = View.GONE
                     }
 
                     ViewState.Status.SUCCESS -> {
-                        fragment_movie_detail_custom_view_loading.visibility = View.GONE
                         bindDetails(it)
+                        fragment_movies_custom_view_loading.visibility = View.GONE
+                        fragment_movie_details_nested_scroll.visibility = View.VISIBLE
+
                     }
 
                     ViewState.Status.ERROR -> {
-                        fragment_movie_detail_custom_view_loading.visibility = View.GONE
+                        fragment_movies_custom_view_loading.visibility = View.GONE
+                        fragment_movie_details_nested_scroll.visibility = View.GONE
                         //show error view (try again)
                     }
                     else -> {

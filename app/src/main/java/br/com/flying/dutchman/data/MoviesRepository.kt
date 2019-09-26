@@ -21,8 +21,8 @@ class MoviesRepository @Inject constructor(
     var memoryCache = listOf<MovieEntity>()
 
 
-    fun getMovies(): Observable<List<Movie>> {
-        val networkWithSave = api.getMovies().doOnNext {
+    fun getMovies(page: Int = 1): Observable<List<Movie>> {
+        val networkWithSave = api.getMovies(page).doOnNext {
             Completable.fromCallable {
                 db.save(it)
             }.subscribeOn(Schedulers.io())
@@ -55,7 +55,7 @@ class MoviesRepository @Inject constructor(
 }
 
 interface MoviesDataRepository {
-    fun getMovies(): Observable<List<MovieEntity>>
+    fun getMovies(page:Int = 1): Observable<List<MovieEntity>>
     fun getMovie(movieId: Int): Single<MovieEntity>
     fun getFavourites(): Single<List<MovieEntity>>
     fun save(movies: List<MovieEntity>)

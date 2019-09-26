@@ -21,7 +21,7 @@ class RoomRepository @Inject constructor(
     }
 
 
-    override fun getMovies(): Observable<List<MovieEntity>> {
+    override fun getMovies(page:Int): Observable<List<MovieEntity>> {
         return db.movieDao().movies().map { movies ->
             mapper.mapFrom(movies)
         }
