@@ -30,7 +30,7 @@ class RoomRepository @Inject constructor(
         }
     }
 
-    override fun getMovie(movieId: Long): Single<MovieEntity> {
+    override fun getMovie(movieId: Int): Single<MovieEntity> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

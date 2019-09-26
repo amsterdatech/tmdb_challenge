@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import br.com.flying.dutchman.di.ViewModelFactory
 import br.com.flying.dutchman.di.ViewModelKey
+import br.com.flying.dutchman.ui.moviedetail.MovieDetailViewModel
 import br.com.flying.dutchman.ui.movies.MoviesViewModel
 import dagger.Binds
 import dagger.Module
@@ -19,6 +20,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(MoviesViewModel::class)
     internal abstract fun moviesListViewModel(viewModel: MoviesViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MovieDetailViewModel::class)
+    internal abstract fun movieDetailsViewModel(viewModel: MovieDetailViewModel): ViewModel
 
     //Add more ViewModels here
 }

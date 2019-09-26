@@ -1,6 +1,7 @@
 package br.com.flying.dutchman.di.module
 
 import br.com.flying.dutchman.data.MoviesRepository
+import br.com.flying.dutchman.domain.interactor.GetMovieDetailsSingleUseCase
 import com.dutchtechnologies.domain.interactor.GetMoviesListSingleUseCase
 import dagger.Module
 import dagger.Provides
@@ -31,4 +32,14 @@ class UseCaseModule {
     ): GetMoviesListSingleUseCase =
 
         GetMoviesListSingleUseCase(repository, ioScheduler, mainThreadScheduler)
+
+    @Provides
+    @Singleton
+    internal fun provideGetMovieDetailsSingleUseCase(
+        repository: MoviesRepository,
+        @Named("ioScheduler") ioScheduler: Scheduler,
+        @Named("mainThreadScheduler") mainThreadScheduler: Scheduler
+    ): GetMovieDetailsSingleUseCase =
+
+        GetMovieDetailsSingleUseCase(repository, ioScheduler, mainThreadScheduler)
 }

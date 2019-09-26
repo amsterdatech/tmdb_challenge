@@ -18,5 +18,8 @@ data class Movie(
     @SerializedName("release_date") val releaseData: String,
     val runtime: Int,
     @SerializedName("vote_average") val voteAverage: Float,
-    @SerializedName("vote_count") val voteCount: Int
+    @SerializedName("vote_count") val voteCount: Int,
+    var genres: List<Genre> = listOf()
 )
+
+data class Genre(val id: Int, val name: String)

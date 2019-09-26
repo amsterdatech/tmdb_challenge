@@ -1,11 +1,15 @@
 package br.com.flying.dutchman.ui.common
 
-import com.google.gson.annotations.SerializedName
-
 data class Movie(
     val id: Int,
     val title: String,
-    @SerializedName("backdrop_path") val backdrop: String,
-    @SerializedName("poster_path") val posterPath: String,
-    val isFavourite: Boolean = false
+    val overview: String,
+    val backdrop: String,
+    val posterPath: String,
+    val releaseData: String,
+    val runtime: Int,
+    val voteAverage: Float,
+    val voteCount: Int,
+    var isFavourite: Boolean = false,
+    var inWatchList: Boolean = false
 )

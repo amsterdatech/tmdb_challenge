@@ -13,7 +13,7 @@ import load
 import kotlin.properties.Delegates
 
 class MoviesAdapter(
-    private val listener: OnItemClickListener<Movie>,
+    private val listener: OnItemClickListener<Movie, View>,
     var favouriteListener: OnItemClickFavouriteListener<Movie>? = null,
     var overflowListener: OnItemClickOverflowMenuListener<Movie, View>? = null
 ) :
@@ -50,7 +50,7 @@ class MoviesAdapter(
 
         fun bind(
             item: Movie,
-            listener: OnItemClickListener<Movie>,
+            listener: OnItemClickListener<Movie, View>,
             favouriteListener: OnItemClickFavouriteListener<Movie>?,
             overflowListener: OnItemClickOverflowMenuListener<Movie, View>?
         ) {
@@ -62,11 +62,11 @@ class MoviesAdapter(
             containerView.favourite_btn.isChecked = item.isFavourite
 
             containerView.setOnClickListener {
-                listener.onItemClicked(item)
+                listener.onItemClicked(item, containerView.custom_view_movie_poster_image)
             }
 
             containerView.custom_view_movie_poster_image.setOnClickListener {
-                listener.onItemClicked(item)
+                listener.onItemClicked(item, containerView.custom_view_movie_poster_image)
             }
 
             containerView.favourite_btn.setOnClickListener {
@@ -81,8 +81,8 @@ class MoviesAdapter(
 
     }
 
-    interface OnItemClickListener<T> {
-        fun onItemClicked(item: T)
+    interface OnItemClickListener<T, V> {
+        fun onItemClicked(item: T, v: V)
     }
 
     interface OnItemClickFavouriteListener<T> {

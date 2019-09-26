@@ -1,50 +1,68 @@
 package br.com.flying.dutchman.ui.moviedetail
 
 import android.os.Bundle
+import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
+import androidx.transition.TransitionInflater
+import br.com.flying.dutchman.App
 import br.com.flying.dutchman.BuildConfig
 import br.com.flying.dutchman.R
 import br.com.flying.dutchman.ui.common.ViewState
+import dagger.android.support.DaggerFragment
+import image
 import kotlinx.android.synthetic.main.fragment_movie_detail.*
 import kotlinx.android.synthetic.main.movie_details.*
 import load
+import toDate
+import toString
 import javax.inject.Inject
 
-class MovieDetailFragment : Fragment() {
+class MovieDetailFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var moviesViewModel: MovieDetailViewModel
+    @Inject
+    lateinit var movieDetailsViewModel: MovieDetailViewModel
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        moviesViewModel =
-            ViewModelProviders.of(this).get(MovieDetailViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_movie_detail, container, false)
-
         setHasOptionsMenu(true)
+        sharedElementEnterTransition =
+            TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val movieId = arguments?.getLong("movie_id")
+        val movieId = arguments?.getInt("movie_id")
 
         setupView(view)
+        observeDetails(movieDetailsViewModel)
 
-        moviesViewModel
+        movieId?.let {
+            movieDetailsViewModel.loadMovieDetail(movieId)
+        }
+    }
+
+    private fun observeDetails(movieDetailsViewModel: MovieDetailViewModel) {
+        movieDetailsViewModel
             .state()
             .observe(this, Observer {
                 when (it.status) {
@@ -62,61 +80,36 @@ class MovieDetailFragment : Fragment() {
                         val posterUrl = "${BuildConfig.IMAGE_SERVER}${movie?.posterPath}"
                         val backdropUrl = "${BuildConfig.IMAGE_SERVER}${movie?.backdrop}"
 
-                        backdrop.load(backdropUrl)
 
+                        val year = movie?.releaseData?.toDate("yyyy")?.toString("yyyy")
+                        val rating = movie?.voteAverage
+                        val additionalInfo = "  $rating - $year"
+
+                        val spanString = SpannableString(additionalInfo
+                        ).image(
+                            App.instance,
+                            R.drawable.ic_rating_black,
+                            0,
+                            1
+                        )
+
+                        backdrop.load(backdropUrl)
                         poster_image.load(posterUrl)
 
-                        title_text.text = movie?.title
-                        info_text.text = "2019"
-                        sinopsis.text =
-                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at lorem lacinia ipsum venenatis pellentesque vitae vel sapien. Suspendisse mattis quam non leo pretium, vitae sodales lacus convallis. Mauris vitae vulputate dui. Nulla semper erat at massa molestie faucibus. Vestibulum lobortis sapien vitae eros condimentum, eget feugiat sem pretium. Quisque et sapien et nunc mattis tempor eget at magna. Sed in augue ex. Nullam sed dui ac odio semper sollicitudin. Praesent porttitor gravida ante sit amet ultricies. Nam sit amet lacus id mi facilisis mollis vitae sed nibh. Maecenas vehicula, massa id tincidunt pretium, ex mi egestas metus, sed semper tortor nisi ut massa.\n" +
-                                    "\n" +
-                                    "Donec tellus libero, iaculis eget semper id, sollicitudin at libero. Proin vitae turpis neque. Nunc et augue vitae ante vestibulum pretium. Pellentesque lobortis vel ipsum et lacinia. Phasellus gravida auctor metus ac sagittis. Aliquam a sapien quam. Fusce eu rutrum odio.\n" +
-                                    "\n" +
-                                    "Nam finibus diam sed quam cursus fermentum. Sed id ligula nunc. Nunc dapibus orci sed lorem dapibus tincidunt. Curabitur feugiat nisl sem, vitae vestibulum lacus auctor a. Vivamus sit amet orci non augue varius egestas. Integer eu porta est, eu ultrices purus. Fusce quam urna, suscipit ut sem id, finibus pulvinar ligula. Suspendisse sed condimentum est. Nam scelerisque nisi a lectus feugiat tristique.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at lorem lacinia ipsum venenatis pellentesque vitae vel sapien. Suspendisse mattis quam non leo pretium, vitae sodales lacus convallis. Mauris vitae vulputate dui. Nulla semper erat at massa molestie faucibus. Vestibulum lobortis sapien vitae eros condimentum, eget feugiat sem pretium. Quisque et sapien et nunc mattis tempor eget at magna. Sed in augue ex. Nullam sed dui ac odio semper sollicitudin. Praesent porttitor gravida ante sit amet ultricies. Nam sit amet lacus id mi facilisis mollis vitae sed nibh. Maecenas vehicula, massa id tincidunt pretium, ex mi egestas metus, sed semper tortor nisi ut massa.\n" +
-                                    "\n" +
-                                    "Donec tellus libero, iaculis eget semper id, sollicitudin at libero. Proin vitae turpis neque. Nunc et augue vitae ante vestibulum pretium. Pellentesque lobortis vel ipsum et lacinia. Phasellus gravida auctor metus ac sagittis. Aliquam a sapien quam. Fusce eu rutrum odio.\n" +
-                                    "\n" +
-                                    "Nam finibus diam sed quam cursus fermentum. Sed id ligula nunc. Nunc dapibus orci sed lorem dapibus tincidunt. Curabitur feugiat nisl sem, vitae vestibulum lacus auctor a. Vivamus sit amet orci non augue varius egestas. Integer eu porta est, eu ultrices purus. Fusce quam urna, suscipit ut sem id, finibus pulvinar ligula. Suspendisse sed condimentum est. Nam scelerisque nisi a lectus feugiat tristique.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at lorem lacinia ipsum venenatis pellentesque vitae vel sapien. Suspendisse mattis quam non leo pretium, vitae sodales lacus convallis. Mauris vitae vulputate dui. Nulla semper erat at massa molestie faucibus. Vestibulum lobortis sapien vitae eros condimentum, eget feugiat sem pretium. Quisque et sapien et nunc mattis tempor eget at magna. Sed in augue ex. Nullam sed dui ac odio semper sollicitudin. Praesent porttitor gravida ante sit amet ultricies. Nam sit amet lacus id mi facilisis mollis vitae sed nibh. Maecenas vehicula, massa id tincidunt pretium, ex mi egestas metus, sed semper tortor nisi ut massa.\n" +
-                                    "\n" +
-                                    "Donec tellus libero, iaculis eget semper id, sollicitudin at libero. Proin vitae turpis neque. Nunc et augue vitae ante vestibulum pretium. Pellentesque lobortis vel ipsum et lacinia. Phasellus gravida auctor metus ac sagittis. Aliquam a sapien quam. Fusce eu rutrum odio.\n" +
-                                    "\n" +
-                                    "Nam finibus diam sed quam cursus fermentum. Sed id ligula nunc. Nunc dapibus orci sed lorem dapibus tincidunt. Curabitur feugiat nisl sem, vitae vestibulum lacus auctor a. Vivamus sit amet orci non augue varius egestas. Integer eu porta est, eu ultrices purus. Fusce quam urna, suscipit ut sem id, finibus pulvinar ligula. Suspendisse sed condimentum est. Nam scelerisque nisi a lectus feugiat tristique.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at lorem lacinia ipsum venenatis pellentesque vitae vel sapien. Suspendisse mattis quam non leo pretium, vitae sodales lacus convallis. Mauris vitae vulputate dui. Nulla semper erat at massa molestie faucibus. Vestibulum lobortis sapien vitae eros condimentum, eget feugiat sem pretium. Quisque et sapien et nunc mattis tempor eget at magna. Sed in augue ex. Nullam sed dui ac odio semper sollicitudin. Praesent porttitor gravida ante sit amet ultricies. Nam sit amet lacus id mi facilisis mollis vitae sed nibh. Maecenas vehicula, massa id tincidunt pretium, ex mi egestas metus, sed semper tortor nisi ut massa.\n" +
-                                    "\n" +
-                                    "Donec tellus libero, iaculis eget semper id, sollicitudin at libero. Proin vitae turpis neque. Nunc et augue vitae ante vestibulum pretium. Pellentesque lobortis vel ipsum et lacinia. Phasellus gravida auctor metus ac sagittis. Aliquam a sapien quam. Fusce eu rutrum odio.\n" +
-                                    "\n" +
-                                    "Nam finibus diam sed quam cursus fermentum. Sed id ligula nunc. Nunc dapibus orci sed lorem dapibus tincidunt. Curabitur feugiat nisl sem, vitae vestibulum lacus auctor a. Vivamus sit amet orci non augue varius egestas. Integer eu porta est, eu ultrices purus. Fusce quam urna, suscipit ut sem id, finibus pulvinar ligula. Suspendisse sed condimentum est. Nam scelerisque nisi a lectus feugiat tristique.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at lorem lacinia ipsum venenatis pellentesque vitae vel sapien. Suspendisse mattis quam non leo pretium, vitae sodales lacus convallis. Mauris vitae vulputate dui. Nulla semper erat at massa molestie faucibus. Vestibulum lobortis sapien vitae eros condimentum, eget feugiat sem pretium. Quisque et sapien et nunc mattis tempor eget at magna. Sed in augue ex. Nullam sed dui ac odio semper sollicitudin. Praesent porttitor gravida ante sit amet ultricies. Nam sit amet lacus id mi facilisis mollis vitae sed nibh. Maecenas vehicula, massa id tincidunt pretium, ex mi egestas metus, sed semper tortor nisi ut massa.\n" +
-                                    "\n" +
-                                    "Donec tellus libero, iaculis eget semper id, sollicitudin at libero. Proin vitae turpis neque. Nunc et augue vitae ante vestibulum pretium. Pellentesque lobortis vel ipsum et lacinia. Phasellus gravida auctor metus ac sagittis. Aliquam a sapien quam. Fusce eu rutrum odio.\n" +
-                                    "\n" +
-                                    "Nam finibus diam sed quam cursus fermentum. Sed id ligula nunc. Nunc dapibus orci sed lorem dapibus tincidunt. Curabitur feugiat nisl sem, vitae vestibulum lacus auctor a. Vivamus sit amet orci non augue varius egestas. Integer eu porta est, eu ultrices purus. Fusce quam urna, suscipit ut sem id, finibus pulvinar ligula. Suspendisse sed condimentum est. Nam scelerisque nisi a lectus feugiat tristique.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at lorem lacinia ipsum venenatis pellentesque vitae vel sapien. Suspendisse mattis quam non leo pretium, vitae sodales lacus convallis. Mauris vitae vulputate dui. Nulla semper erat at massa molestie faucibus. Vestibulum lobortis sapien vitae eros condimentum, eget feugiat sem pretium. Quisque et sapien et nunc mattis tempor eget at magna. Sed in augue ex. Nullam sed dui ac odio semper sollicitudin. Praesent porttitor gravida ante sit amet ultricies. Nam sit amet lacus id mi facilisis mollis vitae sed nibh. Maecenas vehicula, massa id tincidunt pretium, ex mi egestas metus, sed semper tortor nisi ut massa.\n" +
-                                    "\n" +
-                                    "Donec tellus libero, iaculis eget semper id, sollicitudin at libero. Proin vitae turpis neque. Nunc et augue vitae ante vestibulum pretium. Pellentesque lobortis vel ipsum et lacinia. Phasellus gravida auctor metus ac sagittis. Aliquam a sapien quam. Fusce eu rutrum odio.\n" +
-                                    "\n" +
-                                    "Nam finibus diam sed quam cursus fermentum. Sed id ligula nunc. Nunc dapibus orci sed lorem dapibus tincidunt. Curabitur feugiat nisl sem, vitae vestibulum lacus auctor a. Vivamus sit amet orci non augue varius egestas. Integer eu porta est, eu ultrices purus. Fusce quam urna, suscipit ut sem id, finibus pulvinar ligula. Suspendisse sed condimentum est. Nam scelerisque nisi a lectus feugiat tristique.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at lorem lacinia ipsum venenatis pellentesque vitae vel sapien. Suspendisse mattis quam non leo pretium, vitae sodales lacus convallis. Mauris vitae vulputate dui. Nulla semper erat at massa molestie faucibus. Vestibulum lobortis sapien vitae eros condimentum, eget feugiat sem pretium. Quisque et sapien et nunc mattis tempor eget at magna. Sed in augue ex. Nullam sed dui ac odio semper sollicitudin. Praesent porttitor gravida ante sit amet ultricies. Nam sit amet lacus id mi facilisis mollis vitae sed nibh. Maecenas vehicula, massa id tincidunt pretium, ex mi egestas metus, sed semper tortor nisi ut massa.\n" +
-                                    "\n" +
-                                    "Donec tellus libero, iaculis eget semper id, sollicitudin at libero. Proin vitae turpis neque. Nunc et augue vitae ante vestibulum pretium. Pellentesque lobortis vel ipsum et lacinia. Phasellus gravida auctor metus ac sagittis. Aliquam a sapien quam. Fusce eu rutrum odio.\n" +
-                                    "\n" +
-                                    "Nam finibus diam sed quam cursus fermentum. Sed id ligula nunc. Nunc dapibus orci sed lorem dapibus tincidunt. Curabitur feugiat nisl sem, vitae vestibulum lacus auctor a. Vivamus sit amet orci non augue varius egestas. Integer eu porta est, eu ultrices purus. Fusce quam urna, suscipit ut sem id, finibus pulvinar ligula. Suspendisse sed condimentum est. Nam scelerisque nisi a lectus feugiat tristique."
-
+                        title.text = movie?.title
+                        info.text = spanString
+                        description.text = movie?.overview
                     }
 
                     ViewState.Status.ERROR -> {
                         this.fragment_movie_detail_custom_view_loading.visibility = View.GONE
                         //show error view (try again)
                     }
-
-                    ViewState.Status.COMPLETE -> {
+                    else -> {
 
                     }
                 }
             })
-
-
-        movieId?.let {
-            moviesViewModel.loadMovieDetail(movieId)
-        }
-
     }
 
     private fun setupView(view: View) {

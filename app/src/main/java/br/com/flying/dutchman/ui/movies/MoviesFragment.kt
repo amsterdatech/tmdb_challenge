@@ -8,6 +8,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import br.com.flying.dutchman.App
@@ -32,10 +33,18 @@ class MoviesFragment : DaggerFragment() {
     private val adapter by lazy {
         MoviesAdapter(
             listener = object :
-                MoviesAdapter.OnItemClickListener<Movie> {
-                override fun onItemClicked(item: Movie) {
+                MoviesAdapter.OnItemClickListener<Movie, View> {
+                override fun onItemClicked(item: Movie, v: View) {
+                    val extras = FragmentNavigatorExtras(
+                        v to "poster_image"
+                    )
                     val bundle = bundleOf("movie_id" to item.id)
-                    findNavController().navigate(R.id.navigate_to_movie_detail, bundle)
+                    findNavController().navigate(
+                        R.id.navigate_to_movie_detail,
+                        bundle,
+                        null,
+                        extras
+                    )
                 }
             },
             overflowListener = object : MoviesAdapter.OnItemClickOverflowMenuListener<Movie, View> {

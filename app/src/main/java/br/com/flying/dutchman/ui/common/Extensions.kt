@@ -1,4 +1,9 @@
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.ImageSpan
 import android.util.TypedValue
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
@@ -7,17 +12,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import br.com.flying.dutchman.App
+import br.com.flying.dutchman.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import kotlin.math.roundToInt
+import java.text.SimpleDateFormat
+import java.util.*
 
 fun AppCompatImageView.load(url: String?, circle: Boolean = false) {
     val options = RequestOptions()
         .priority(Priority.NORMAL)
         .diskCacheStrategy(DiskCacheStrategy.DATA)
-//        .placeholder(R.color.colorAccent)
+        .placeholder(R.drawable.vector_placeholder_title_small)
 
     if (circle) {
         options.circleCrop()
@@ -62,4 +70,25 @@ inline fun <reified T : ViewModel> Fragment.withViewModel(
     val viewModel = viewModelProviders<T>(viewModelFactory)
     viewModel.body()
     return viewModel
+}
+
+
+fun String.toDate(format: String): Date = SimpleDateFormat(format).parse(this)
+
+fun Date.toString(format: String): String = SimpleDateFormat(format).format(this)
+
+
+fun SpannableString.color(color: String, start: Int, end: Int): SpannableString {
+    this.setSpan(ForegroundColorSpan(Color.parseColor(color)), start, end, 0)
+    return this
+}
+
+fun SpannableString.image(
+    context: Context,
+    drawableRes: Int,
+    start: Int,
+    end: Int
+): SpannableString {
+    this.setSpan(ImageSpan(context, drawableRes, ImageSpan.ALIGN_BOTTOM), start, end, 0)
+    return this
 }

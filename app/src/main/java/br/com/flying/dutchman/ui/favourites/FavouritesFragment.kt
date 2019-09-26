@@ -30,8 +30,8 @@ class FavouritesFragment : Fragment() {
 
     private val adapter by lazy {
         MoviesAdapter(object :
-            MoviesAdapter.OnItemClickListener<Movie> {
-            override fun onItemClicked(item: Movie) {
+            MoviesAdapter.OnItemClickListener<Movie,View> {
+            override fun onItemClicked(item: Movie, v:View) {
             }
 
         })

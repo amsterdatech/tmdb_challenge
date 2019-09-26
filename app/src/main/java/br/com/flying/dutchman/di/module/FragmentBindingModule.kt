@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import br.com.flying.dutchman.di.FragmentKey
 import br.com.flying.dutchman.di.factory.InjectingFragmentFactory
+import br.com.flying.dutchman.ui.moviedetail.MovieDetailFragment
 import br.com.flying.dutchman.ui.movies.MoviesFragment
 import dagger.Binds
 import dagger.Module
@@ -16,6 +17,11 @@ abstract class FragmentBindingModule {
     @IntoMap
     @FragmentKey(MoviesFragment::class)
     abstract fun bindMainFragment(mainFragment: MoviesFragment): Fragment
+
+    @Binds
+    @IntoMap
+    @FragmentKey(MovieDetailFragment::class)
+    abstract fun bindDetailsFragment(detailFragment: MovieDetailFragment): Fragment
 
     @Binds
     abstract fun bindFragmentFactory(factory: InjectingFragmentFactory): FragmentFactory

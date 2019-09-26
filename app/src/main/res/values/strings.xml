@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">tmdb_code_challenge</string>
+    <string name="app_name">Android Challenge</string>
     <string name="title_home">Movies</string>
     <string name="title_favourites">Favourites</string>
     <string name="watch_later">Watch Later</string>

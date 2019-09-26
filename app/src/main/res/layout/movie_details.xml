@@ -13,12 +13,13 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:scaleType="centerCrop"
+        android:transitionName="poster_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/title_text"
+        android:id="@+id/title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -27,65 +28,65 @@
         android:gravity="left"
         android:maxLines="2"
         android:minHeight="36dp"
-        android:text="Spider Man Comes Home"
         android:textColor="@android:color/white"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toEndOf="@+id/poster_image"
-        app:layout_constraintTop_toTopOf="@+id/poster_image" />
+        app:layout_constraintTop_toTopOf="@+id/poster_image"
+        tools:text="Spider Man Comes Home" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/info_text"
+        android:id="@+id/info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:gravity="left"
-        android:text="7,7 - 2019"
+        android:gravity="top"
         android:textColor="@android:color/white"
-        android:textSize="12dp"
-        app:layout_constraintStart_toStartOf="@id/title_text"
-        app:layout_constraintTop_toBottomOf="@+id/title_text" />
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@id/title"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        tools:text="7,7 - 2019" />
 
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/sinopsis"
+        android:id="@+id/description"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:paddingBottom="16dp"
+        android:layout_marginTop="8dp"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/favourite_button"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/poster_image"
+        app:layout_constraintVertical_bias="0.120000005"
         tools:text="@tools:sample/lorem/random" />
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/favourite_button"
-        android:layout_width="@dimen/ic_movie_overflow_height"
-        android:layout_height="@dimen/ic_movie_overflow_height"
-        android:layout_marginTop="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:button="@drawable/state_vector_favourite_btn"
+        android:buttonTint="@color/state_color_checked_btn"
         android:scaleType="centerCrop"
-        android:tint="@color/colorAccent"
-        app:layout_constraintEnd_toStartOf="@+id/watch_button"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/poster_image"
-        tools:srcCompat="@drawable/ic_favorite" />
+        app:layout_constraintBottom_toBottomOf="@+id/poster_image"
+        app:layout_constraintStart_toStartOf="@+id/info"
+        app:layout_constraintTop_toBottomOf="@+id/info" />
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/watch_button"
-        android:layout_width="@dimen/ic_movie_overflow_height"
-        android:layout_height="@dimen/ic_movie_overflow_height"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:button="@drawable/state_vector_watch_list_btn"
+        android:buttonTint="@color/state_color_checked_btn"
         android:scaleType="centerCrop"
-        android:tint="@color/colorAccent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintBottom_toBottomOf="@+id/favourite_button"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toEndOf="@+id/favourite_button"
         app:layout_constraintTop_toTopOf="@+id/favourite_button"
-        tools:srcCompat="@drawable/ic_bookmark_black_24dp" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

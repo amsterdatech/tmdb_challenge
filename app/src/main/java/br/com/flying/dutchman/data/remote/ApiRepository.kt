@@ -22,8 +22,11 @@ class ApiRepository @Inject constructor(
             }
     }
 
-    override fun getMovie(movieId: Long): Single<MovieEntity> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getMovie(movieId: Int): Single<MovieEntity> {
+        return apiService.getMovie(movieId)
+            .map {
+                mapper.mapFromRemote(listOf(it)).first()
+            }
     }
 
     override fun getFavourites(): Single<List<MovieEntity>> {

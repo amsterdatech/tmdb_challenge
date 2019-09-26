@@ -6,9 +6,9 @@ import retrofit2.http.Path
 
 interface TmdbApiService {
 
-    @GET("movie")
+    @GET("discover/movie")
     fun getMovies(): Single<MovieResponse>
 
     @GET("movie/{movieId}")
-    fun getMovie(@Path("movieId") id: Long): Single<MovieResponse>
+    fun getMovie(@Path("movieId") id: Int): Single<Movie>
 }

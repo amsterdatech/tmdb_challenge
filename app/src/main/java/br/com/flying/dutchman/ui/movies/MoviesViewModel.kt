@@ -51,7 +51,19 @@ class MoviesViewModel @Inject constructor(private val moviesUseCase: GetMoviesLi
         DisposableSingleObserver<List<com.dutchtechnologies.domain.Movie>>() {
         override fun onSuccess(results: List<com.dutchtechnologies.domain.Movie>) {
             val result = results.map {
-                Movie(it.id, it.title, it.backdropPath, it.posterPath, false)
+                Movie(
+                    it.id,
+                    it.title,
+                    it.overview,
+                    it.backdropPath,
+                    it.posterPath,
+                    it.releaseData,
+                    it.runtime,
+                    it.voteAverage,
+                    it.voteCount,
+                    it.isFavourite,
+                    it.inWatchList
+                )
             }
 
             state.postValue(
