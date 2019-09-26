@@ -76,15 +76,10 @@ class MoviesFragment : DaggerFragment(), MoviesAdapter.OnItemClickListener<Movie
     }
 
     override fun onItemClicked(item: Movie, v: View) {
-        val extras = FragmentNavigatorExtras(
-            v to "poster_image"
-        )
         val bundle = bundleOf("movie_id" to item.id)
         findNavController().navigate(
             R.id.navigate_to_movie_detail,
-            bundle,
-            null,
-            extras
+            bundle
         )
     }
 

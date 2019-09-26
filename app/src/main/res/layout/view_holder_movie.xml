@@ -17,7 +17,6 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/custom_view_movie_poster_image"
-            android:transitionName="poster_image"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:clickable="true"
@@ -28,53 +27,61 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/custom_view_movie_title_text"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/info_area_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="36dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="8dp"
-            android:ellipsize="end"
-            android:gravity="top"
-            android:maxLines="2"
-            android:paddingLeft="@dimen/movie_title_padding"
-            android:paddingRight="@dimen/movie_title_padding"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/overflow_btn"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/custom_view_movie_poster_image"
-            app:layout_constraintVertical_bias="0.0"
-            tools:text="@sample/movies.json/data/title" />
+            android:background="#80000000"
+            app:layout_constraintBottom_toBottomOf="@+id/custom_view_movie_poster_image">
 
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/favourite_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="8dp"
-            android:button="@drawable/state_vector_favourite_btn"
-            android:scaleType="centerCrop"
-            android:buttonTint="@color/state_color_checked_btn"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/custom_view_movie_title_text"
-            app:layout_constraintTop_toBottomOf="@+id/custom_view_movie_title_text"
-             />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/custom_view_movie_title_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:gravity="top"
+                android:maxLines="2"
+                android:minHeight="36dp"
+                android:paddingLeft="@dimen/movie_title_padding"
+                android:paddingRight="@dimen/movie_title_padding"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/info_area_content"
+                app:layout_constraintEnd_toStartOf="@+id/overflow_btn"
+                app:layout_constraintLeft_toLeftOf="@+id/info_area_content"
+                app:layout_constraintStart_toStartOf="@+id/info_area_content"
+                app:layout_constraintTop_toTopOf="@+id/info_area_content"
+                app:layout_constraintVertical_bias="0.0"
+                tools:text="@sample/movies.json/data/title" />
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/overflow_btn"
-            android:layout_width="@dimen/ic_movie_overflow_height"
-            android:layout_height="@dimen/ic_movie_overflow_height"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="4dp"
-            android:background="@null"
-            android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/custom_view_movie_poster_image"
-            app:srcCompat="@drawable/ic_more_vert_black_24dp" />
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/favourite_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
+                android:button="@drawable/state_vector_favourite_btn"
+                android:buttonTint="@color/state_color_checked_btn"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="@+id/info_area_content"
+                app:layout_constraintStart_toStartOf="@+id/custom_view_movie_title_text"
+                app:layout_constraintTop_toBottomOf="@+id/custom_view_movie_title_text" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/overflow_btn"
+                android:layout_width="@dimen/ic_movie_overflow_height"
+                android:layout_height="@dimen/ic_movie_overflow_height"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:background="@null"
+                android:scaleType="centerCrop"
+                android:tint="@android:color/white"
+                app:layout_constraintEnd_toEndOf="@+id/info_area_content"
+                app:layout_constraintTop_toTopOf="@+id/info_area_content"
+                app:srcCompat="@drawable/ic_more_overflow" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
